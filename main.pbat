@@ -1,7 +1,7 @@
 def a
     #use(conda)
-    echo 1 %GITHUB_ACTION_PATH%
-    echo 2 ${{ github.action_path }}
+    echo 1 %GITHUB_WORKSPACE%
+    echo 2 ${{ github.workspace }}
     #python -c "import os; print(os.path.realpath('.'))"
 
 def b

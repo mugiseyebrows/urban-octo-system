@@ -7,8 +7,8 @@ jobs:
     - name: a
       shell: cmd
       run: |
-        echo 1 %GITHUB_ACTION_PATH%
-        echo 2 ${{ github.action_path }}
+        echo 1 %GITHUB_WORKSPACE%
+        echo 2 ${{ github.workspace }}
     - name: b
       shell: cmd
       run: |
