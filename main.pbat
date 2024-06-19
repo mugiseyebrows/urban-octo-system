@@ -1,18 +1,10 @@
-def a
-    #use(conda)
-    echo 1 %GITHUB_WORKSPACE%
-    echo 2 ${{ github.workspace }}
-    #python -c "import os; print(os.path.realpath('.'))"
 
-def b
-    echo 3
-    if_exist_return(C:\Temp)
-    echo 4
-
-def c
-    set
-
-def main depends on a and b and c
-    echo 5
+def main
+    pushd C:\temp
+        echo %CD%
+        pushd_cd()
+            echo %CD%
+        popd
+    popd
 
 github-workflow 1

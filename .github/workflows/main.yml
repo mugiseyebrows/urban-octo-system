@@ -4,21 +4,12 @@ jobs:
   main:
     runs-on: windows-latest
     steps:
-    - name: a
-      shell: cmd
-      run: |
-        echo 1 %GITHUB_WORKSPACE%
-        echo 2 ${{ github.workspace }}
-    - name: b
-      shell: cmd
-      run: |
-        echo 3
-        if exist C:\Temp goto b_end
-        echo 4
-        :b_end
-    - name: c
-      shell: cmd
-      run: set
     - name: main
       shell: cmd
-      run: echo 5
+      run: |
+        pushd C:\temp
+            echo %CD%
+            pushd %GITHUB_WORKSPACE%
+                echo %CD%
+            popd
+        popd
