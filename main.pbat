@@ -1,0 +1,15 @@
+def a
+    use(conda)
+    echo 1 %GITHUB_PATH%
+    echo 2 ${{ github.path }}
+    python -c "import os; print(os.path.realpath('.'))"
+
+def b
+    echo 3
+    if_exist_return(C:\Temp)
+    echo 4
+
+def main depends on a and b
+    echo 5
+
+github-workflow 1

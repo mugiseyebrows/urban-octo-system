@@ -1,0 +1,26 @@
+name: main
+on: push
+jobs:
+  main:
+    runs-on: windows-latest
+    steps:
+    - name: a
+      shell: cmd
+      run: |
+        set PATH=C:\Miniconda3;C:\Miniconda3\Scripts;%USERPROFILE%\Miniconda3;%USERPROFILE%\Miniconda3\Scripts;%PATH%
+        echo 1 %GITHUB_PATH%
+        echo 2 ${{ github.path }}
+        python -c "import os; print(os.path.realpath('.'))"
+    - name: b
+      shell: cmd
+      run: |
+        set PATH=C:\Miniconda3;C:\Miniconda3\Scripts;%USERPROFILE%\Miniconda3;%USERPROFILE%\Miniconda3\Scripts;%PATH%
+        echo 3
+        if exist C:\Temp goto b_end
+        echo 4
+        :b_end
+    - name: main
+      shell: cmd
+      run: |
+        set PATH=C:\Miniconda3;C:\Miniconda3\Scripts;%USERPROFILE%\Miniconda3;%USERPROFILE%\Miniconda3\Scripts;%PATH%
+        echo 5
