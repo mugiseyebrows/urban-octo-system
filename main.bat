@@ -11,3 +11,4 @@ pushd build
     cmake --install .
 popd
 :foo_end
+dir C:\myapp

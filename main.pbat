@@ -13,4 +13,7 @@ def foo
         cmake --install .
     popd
 
+def bar depends on foo
+    dir C:\myapp
+
 github-workflow 1
