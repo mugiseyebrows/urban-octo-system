@@ -1,10 +1,16 @@
 
-def main
-    pushd C:\temp
-        echo %CD%
-        pushd_cd()
-            echo %CD%
-        popd
+def foo
+    use(cmake)
+    github_checkout()
+    github_cache(C:/myapp, :k=myapp)
+    if_exist_return(C:/myapp)
+    echo myapp not found
+    call_vcvars()
+    mkdir(build)
+    pushd build
+        cmake -G Ninja -DCMAKE_INSTALL_PREFIX=C:/myapp ..
+        cmake --build .
+        cmake --install .
     popd
 
 github-workflow 1
