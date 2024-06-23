@@ -98,5 +98,7 @@ pushd %~dp0
     popd
 popd
 :qsqlpsql671_end
+where mugideploy || pip install mugideploy
 qmake
 mingw32-make
+mugideploy collect --bin release\main.exe --plugins sqldrivers --zip
