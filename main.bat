@@ -1,6 +1,6 @@
 @echo off
 rem This file is generated from main.pbat, all edits will be lost
-set PATH=C:\mingw1120_64\bin;C:\Program Files\7-Zip;C:\Program Files\Meson;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files (x86)\Android\android-sdk\cmake\3.22.1\bin;C:\Program Files\CMake\bin;C:\postgresql-14\bin;C:\qt\6.7.1\mingw1120_64\bin;C:\mysql-8.2.0-winx64\lib;C:\mysql-8.2.0-winx64\bin;%PATH%
+set PATH=C:\mingw1120_64\bin;C:\Program Files\7-Zip;C:\Program Files\Meson;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files (x86)\Android\android-sdk\cmake\3.22.1\bin;C:\Program Files\CMake\bin;C:\postgresql-14\bin;C:\qt\6.7.1\mingw1120_64\bin;C:\mysql-8.2.0-winx64\lib;C:\mysql-8.2.0-winx64\bin;C:\Miniconda3;C:\Miniconda3\Scripts;%USERPROFILE%\Miniconda3;%USERPROFILE%\Miniconda3\Scripts;%PATH%
 if exist "C:\Program Files\Git\mingw32\bin\curl.exe" set CURL=C:\Program Files\Git\mingw32\bin\curl.exe
 if exist "C:\Program Files\Git\mingw64\bin\curl.exe" set CURL=C:\Program Files\Git\mingw64\bin\curl.exe
 if exist "C:\Windows\System32\curl.exe" set CURL=C:\Windows\System32\curl.exe
@@ -95,3 +95,7 @@ pushd %~dp0
     popd
 popd
 :qsqlpsql671_end
+where mugideploy || pip install mugideploy
+qmake
+mingw32-make
+mugideploy collect --bin release\main.exe --plugins sqldrivers --zip

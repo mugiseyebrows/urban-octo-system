@@ -8,6 +8,7 @@ def mingw1120
     popd
 
 def qt671 depends on mingw1120
+    github_cache(C:\mingw1120_64, C:\Qt\6.7.1\mingw1120_64, :k=qt671)
     use(ninja)
     use(cmake)
     where(gcc, qmake, cmake, ninja, libpq.dll, libmysql.dll)
@@ -105,13 +106,13 @@ def qsqlmysql671 depends on mysql820 and mingw1120
     popd
 
 def main depends on qt671 qsqlmysql671 qsqlpsql671
-    #github_checkout()
-    github_cache(C:\mingw1120_64, C:\Qt\6.7.1\mingw1120_64, :k=qt671)
-    #use(conda)
-    #where mugideploy || pip install mugideploy
-    #qmake
-    #mingw32-make
-    #mugideploy collect --bin release\main.exe --plugins sqldrivers --zip
-    #github_upload(main*.zip)
+    use(conda)
+    github_checkout()
+    github_rmdir(C:\Strawberry)
+    where mugideploy || pip install mugideploy
+    qmake
+    mingw32-make
+    mugideploy collect --bin release\main.exe --plugins sqldrivers --zip
+    github_upload(main*.zip)
 
 github-workflow 1
