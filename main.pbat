@@ -103,8 +103,10 @@ def qsqlmysql671 depends on mysql820 and mingw1120
     popd
 
 def main depends on qt671 qsqlmysql671 qsqlpsql671
+    use(conda)
     github_cache(C:\mingw1120_64, C:\Qt\6.7.1\mingw1120_64, :k=qt6)
-    gcc -dumpversion
-    qmake -v
+    qmake
+    mingw32-make
+    github_upload(release\main.exe)
 
 github-workflow 1
