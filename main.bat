@@ -8,6 +8,12 @@ if not defined CURL (
 echo CURL not found
 exit /b
 )
+where libpq.dll || echo ok
+where libmysql.dll || echo ok
+where gcc || echo ok
+where qmake || echo ok
+where ninja || echo ok
+where cmake || echo ok
 if exist C:\mingw1120_64\bin\gcc.exe goto mingw1120_end
 pushd %~dp0
     if not exist x86_64-11.2.0-release-posix-seh-rt_v9-rev3.7z "%CURL%" -L -o x86_64-11.2.0-release-posix-seh-rt_v9-rev3.7z https://github.com/cristianadam/mingw-builds/releases/download/v11.2.0-rev3/x86_64-11.2.0-release-posix-seh-rt_v9-rev3.7z
@@ -17,6 +23,7 @@ popd
 :mingw1120_end
 if exist C:\Qt\6.7.1\mingw1120_64\bin\qmake.exe goto qt671_end
 rmdir /q /s C:\Program Files\PostgreSQL || echo ok
+rmdir /q /s C:\Program Files\MySQL || echo ok
 pushd %~dp0
     if not exist qtbase-everywhere-src-6.7.1.zip "%CURL%" -L -o qtbase-everywhere-src-6.7.1.zip https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtbase-everywhere-src-6.7.1.zip
     if not exist qtbase-everywhere-src-6.7.1 7z x -y qtbase-everywhere-src-6.7.1.zip
