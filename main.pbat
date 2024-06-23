@@ -1,10 +1,4 @@
 def mingw1120
-    where libpq.dll || echo ok
-    where libmysql.dll || echo ok
-    where gcc || echo ok
-    where qmake || echo ok
-    where ninja || echo ok
-    where cmake || echo ok
     add_path(C:\mingw1120_64\bin)
     if_exist_return(C:\mingw1120_64\bin\gcc.exe)
     pushd_cd()
@@ -16,9 +10,10 @@ def mingw1120
 def qt671 depends on mingw1120
     use(ninja)
     use(cmake)
+    where(gcc, qmake, cmake, ninja, libpq.dll, libmysql.dll)
     if_exist_return(C:\Qt\6.7.1\mingw1120_64\bin\qmake.exe)
-    rmdir /q /s C:\Program Files\PostgreSQL || echo ok
-    rmdir /q /s C:\Program Files\MySQL || echo ok
+    rmdir(C:\Program Files\PostgreSQL)
+    rmdir(C:\Program Files\MySQL)
     pushd_cd()
         download(https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtbase-everywhere-src-6.7.1.zip, :cache)
         unzip(qtbase-everywhere-src-6.7.1.zip, :test=qtbase-everywhere-src-6.7.1)
@@ -55,6 +50,7 @@ def qsqlpsql671 depends on psql1412 and mingw1120
     add_path(C:\postgresql-14\bin)
     add_path(C:\qt\6.7.1\mingw1120_64\bin)
     if_exist_return(C:\qt\6.7.1\mingw1120_64\plugins\sqldrivers\qsqlpsql.dll)
+    where(gcc, qmake, cmake, ninja, libpq.dll, libmysql.dll)
     set PostgreSQL_ROOT=C:\postgresql-14
     pushd_cd()
         mkdir(build-qsqlpsql)
@@ -79,6 +75,7 @@ def qsqlpsql671 depends on psql1412 and mingw1120
     popd
 
 def mysql820
+    if_exist_return(C:\qt\6.7.1\mingw1120_64\plugins\sqldrivers\qsqlmysql.dll)
     if_exist_return(C:\mysql-8.2.0-winx64\bin\mysql.exe)
     pushd_cd()
         download(https://cdn.mysql.com/Downloads/MySQL-8.2/mysql-8.2.0-winx64.zip, :cache)
@@ -86,7 +83,9 @@ def mysql820
     popd
 
 def qsqlmysql671 depends on mysql820 and mingw1120
+    if_exist_return(C:\qt\6.7.1\mingw1120_64\plugins\sqldrivers\qsqlmysql.dll)
     add_path(C:\mysql-8.2.0-winx64\lib, C:\mysql-8.2.0-winx64\bin)
+    where(gcc, qmake, cmake, ninja, libpq.dll, libmysql.dll)
     pushd_cd()
         mkdir(build-qsqlmysql)
         download(https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtbase-everywhere-src-6.7.1.zip, :cache)
