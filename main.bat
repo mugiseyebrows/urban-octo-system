@@ -24,6 +24,7 @@ where libmysql.dll || echo libmysql.dll not found
 if exist C:\Qt\6.7.1\mingw1120_64\bin\qmake.exe goto qt671_end
 rmdir /s /q "C:\Program Files\PostgreSQL" || echo 1 > NUL
 rmdir /s /q "C:\Program Files\MySQL" || echo 1 > NUL
+rmdir /s /q "C:\Program Files\OpenSSL" || echo 1 > NUL
 pushd %~dp0
     if not exist qtbase-everywhere-src-6.7.1.zip "%CURL%" -L -o qtbase-everywhere-src-6.7.1.zip https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtbase-everywhere-src-6.7.1.zip
     if not exist qtbase-everywhere-src-6.7.1 7z x -y qtbase-everywhere-src-6.7.1.zip
