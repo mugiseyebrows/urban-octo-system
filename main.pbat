@@ -17,7 +17,7 @@ def qt671 depends on mingw1120
         unzip(qtbase-everywhere-src-6.7.1.zip, :test=qtbase-everywhere-src-6.7.1)
         pushd qtbase-everywhere-src-6.7.1
             # patch(..\patch2.patch, :p1)
-            patch(..\qfilesystemmodel.patch, :p1)
+            # patch(..\qfilesystemmodel.patch, :p1)
             # -debug-and-release -G "Ninja Multi-Config" -DCMAKE_CONFIGURATION_TYPES="Release;Debug"
             # -release -G Ninja
             # if exist CMakeCache.txt del /f CMakeCache.txt
