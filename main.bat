@@ -116,4 +116,4 @@ popd
 where mugideploy || pip install mugideploy
 qmake
 mingw32-make
-mugideploy collect --bin release\main.exe --plugins sqldrivers --zip
+mugideploy collect --bin release\main.exe --zip

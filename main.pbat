@@ -8,7 +8,7 @@ def main depends on qt671 qsqlmysql671 qsqlpsql671 qwt63
     where mugideploy || pip install mugideploy
     qmake
     mingw32-make
-    mugideploy collect --bin release\main.exe --plugins sqldrivers --zip
+    mugideploy collect --bin release\main.exe --zip
     github_upload(main*.zip)
 
 github-workflow 1
