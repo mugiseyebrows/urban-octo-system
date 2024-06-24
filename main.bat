@@ -94,6 +94,7 @@ pushd qtsvg-everywhere-src-6.7.1
     popd
 popd
 :qtsvg671_end
+if exist C:\qwt\6.3.0\mingw1120_64\lib\qwt.dll goto qwt63_end
 if not exist qwt (
     git clone https://git.code.sf.net/p/qwt/git qwt
     pushd qwt
@@ -111,6 +112,7 @@ pushd qwt
     mingw32-make -j4
     mingw32-make install
 popd
+:qwt63_end
 where mugideploy || pip install mugideploy
 qmake
 mingw32-make

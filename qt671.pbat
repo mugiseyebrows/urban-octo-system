@@ -119,6 +119,7 @@ def qtsvg671
     popd
 
 def qwt63 depends on qt671 and qtsvg671
+    if_exist_return(C:\qwt\6.3.0\mingw1120_64\lib\qwt.dll)
     git_clone(https://git.code.sf.net/p/qwt/git, qwt, :ref=qwt-6.3)
     download(https://gist.githubusercontent.com/mugiseyebrows/b9521434ce1b8aa798615a7b0541db58/raw/9464118e04a4cb82e522a0575f2581deff8f94c6/0001-qwt-mingw1120_64.patch, :cache)
     download(https://gist.githubusercontent.com/mugiseyebrows/a04100f99b8f1f8c6815c3903aefad96/raw/a3b9e3087d0889a882f6129a3e07d11c06d1101f/0002-qwt-no-examples.patch, :cache)

@@ -172,6 +172,7 @@ jobs:
         echo PATCH not found
         exit /b
         )
+        if exist C:\qwt\6.3.0\mingw1120_64\lib\qwt.dll goto qwt63_end
         if not exist qwt (
             git clone https://git.code.sf.net/p/qwt/git qwt
             pushd qwt
@@ -189,6 +190,7 @@ jobs:
             mingw32-make -j4
             mingw32-make install
         popd
+        :qwt63_end
     - name: main
       shell: cmd
       run: |
