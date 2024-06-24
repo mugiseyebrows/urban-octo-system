@@ -12,6 +12,7 @@ jobs:
         path: |
           C:\mingw1120_64
           C:\Qt\6.7.1\mingw1120_64
+          C:\qwt\6.3.0\mingw1120_64
         key: qt671
     - name: mingw1120
       shell: cmd
