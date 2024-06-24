@@ -7,17 +7,17 @@ jobs:
     - name: checkout
       uses: actions/checkout@v4
     - name: cache C:\mingw1120_64
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: C:\mingw1120_64
         key: mingw1120_64
     - name: cache C:\Qt\6.7.1\mingw1120_64
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: C:\Qt\6.7.1\mingw1120_64
         key: qt671
     - name: cache C:\qwt\6.3.0\mingw1120_64
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: C:\qwt\6.3.0\mingw1120_64
         key: qwt63
