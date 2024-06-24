@@ -113,9 +113,7 @@ pushd qwt
     mingw32-make install
 popd
 :qwt630_end
-if exist C:\qt goto main_end
 where mugideploy || pip install mugideploy
 qmake
 mingw32-make
 mugideploy collect --bin release\main.exe --zip
-:main_end
