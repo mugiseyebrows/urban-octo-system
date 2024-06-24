@@ -82,6 +82,18 @@ pushd %~dp0
     popd
 popd
 :qsqlpsql671_end
+if exist C:\qt\6.7.1\mingw1120_64\bin\Qt6Svg.dll goto qtsvg671_end
+if not exist qtsvg-everywhere-src-6.7.1.zip "%CURL%" -L -o qtsvg-everywhere-src-6.7.1.zip https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtsvg-everywhere-src-6.7.1.zip
+if not exist qtsvg-everywhere-src-6.7.1 7z x -y qtsvg-everywhere-src-6.7.1.zip
+pushd qtsvg-everywhere-src-6.7.1
+    mkdir build
+    pushd build
+        cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake ..
+        cmake --build .
+        cmake --install .
+    popd
+popd
+:qtsvg671_end
 if not exist qwt (
     git clone https://git.code.sf.net/p/qwt/git qwt
     pushd qwt

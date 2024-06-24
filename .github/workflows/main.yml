@@ -141,6 +141,27 @@ jobs:
             popd
         popd
         :qsqlpsql671_end
+    - name: qtsvg671
+      shell: cmd
+      run: |
+        set PATH=C:\mingw1120_64\bin;C:\Program Files\7-Zip;C:\Program Files\Meson;C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files (x86)\Android\android-sdk\cmake\3.22.1\bin;C:\Program Files\CMake\bin;C:\postgresql-14\bin;C:\qt\6.7.1\mingw1120_64\bin;C:\mysql-8.2.0-winx64\lib;C:\mysql-8.2.0-winx64\bin;C:\Program Files\Git\cmd;C:\Miniconda3;C:\Miniconda3\Scripts;%USERPROFILE%\Miniconda3;%USERPROFILE%\Miniconda3\Scripts;%PATH%
+        if exist "C:\Program Files\Git\usr\bin\patch.exe" set PATCH=C:\Program Files\Git\usr\bin\patch.exe
+        if not defined PATCH (
+        echo PATCH not found
+        exit /b
+        )
+        if exist C:\qt\6.7.1\mingw1120_64\bin\Qt6Svg.dll goto qtsvg671_end
+        if not exist qtsvg-everywhere-src-6.7.1.zip curl -L -o qtsvg-everywhere-src-6.7.1.zip https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtsvg-everywhere-src-6.7.1.zip
+        if not exist qtsvg-everywhere-src-6.7.1 7z x -y qtsvg-everywhere-src-6.7.1.zip
+        pushd qtsvg-everywhere-src-6.7.1
+            mkdir build
+            pushd build
+                cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake ..
+                cmake --build .
+                cmake --install .
+            popd
+        popd
+        :qtsvg671_end
     - name: qwt63
       shell: cmd
       run: |
