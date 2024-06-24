@@ -8,6 +8,11 @@ if not defined CURL (
 echo CURL not found
 exit /b
 )
+if exist "C:\Program Files\Git\usr\bin\patch.exe" set PATCH=C:\Program Files\Git\usr\bin\patch.exe
+if not defined PATCH (
+echo PATCH not found
+exit /b
+)
 if exist C:\mingw1120_64\bin\gcc.exe goto mingw1120_end
 pushd %~dp0
     if not exist x86_64-11.2.0-release-posix-seh-rt_v9-rev3.7z "%CURL%" -L -o x86_64-11.2.0-release-posix-seh-rt_v9-rev3.7z https://github.com/cristianadam/mingw-builds/releases/download/v11.2.0-rev3/x86_64-11.2.0-release-posix-seh-rt_v9-rev3.7z
@@ -42,7 +47,7 @@ pushd %~dp0
     if not exist qtbase-everywhere-src-6.7.1.zip "%CURL%" -L -o qtbase-everywhere-src-6.7.1.zip https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtbase-everywhere-src-6.7.1.zip
     if not exist qtbase-everywhere-src-6.7.1 7z x -y qtbase-everywhere-src-6.7.1.zip
     pushd build-qsqlmysql
-        cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DMySQL_INCLUDE_DIR="C:\mysql-8.2.0-winx64\include" -DMySQL_LIBRARY="C:\mysql-8.2.0-winx64\lib\libmysql.lib" ..\qtbase-everywhere-src-6.7.1\src\plugins\sqldrivers
+        cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake -DMySQL_INCLUDE_DIR="C:\mysql-8.2.0-winx64\include" -DMySQL_LIBRARY="C:\mysql-8.2.0-winx64\lib\libmysql.lib" ..\qtbase-everywhere-src-6.7.1\src\plugins\sqldrivers
         cmake --build .
         cmake --install .
         copy /y C:\mysql-8.2.0-winx64\lib\libmysql.dll C:\Qt\6.7.1\mingw1120_64\bin
@@ -66,7 +71,7 @@ pushd %~dp0
     if not exist qtbase-everywhere-src-6.7.1.zip "%CURL%" -L -o qtbase-everywhere-src-6.7.1.zip https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtbase-everywhere-src-6.7.1.zip
     if not exist qtbase-everywhere-src-6.7.1 7z x -y qtbase-everywhere-src-6.7.1.zip
     pushd build-qsqlpsql
-        cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" ..\qtbase-everywhere-src-6.7.1\src\plugins\sqldrivers
+        cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake ..\qtbase-everywhere-src-6.7.1\src\plugins\sqldrivers
         cmake --build .
         cmake --install .
         copy /y C:\postgresql-14\bin\libpq.dll C:\Qt\6.7.1\mingw1120_64\bin
@@ -83,12 +88,20 @@ if not exist qwt (
         git checkout qwt-6.3
     popd
 )
+if not exist 0001-qwt-mingw1120_64.patch "%CURL%" -L -o 0001-qwt-mingw1120_64.patch https://gist.githubusercontent.com/mugiseyebrows/b9521434ce1b8aa798615a7b0541db58/raw/9464118e04a4cb82e522a0575f2581deff8f94c6/0001-qwt-mingw1120_64.patch
+if not exist 0002-qwt-no-examples.patch "%CURL%" -L -o 0002-qwt-no-examples.patch https://gist.githubusercontent.com/mugiseyebrows/a04100f99b8f1f8c6815c3903aefad96/raw/a3b9e3087d0889a882f6129a3e07d11c06d1101f/0002-qwt-no-examples.patch
+if not exist 0003-qwt-release.patch "%CURL%" -L -o 0003-qwt-release.patch https://gist.githubusercontent.com/mugiseyebrows/885a600fd06902254e224ba757446e25/raw/81ea4ae58764a511c60cdaeb81dbc9e9524220d4/0003-qwt-release.patch
 pushd qwt
+    "%PATCH%" -N -i ..\0001-qwt-mingw1120_64.patch
+    "%PATCH%" -N -i ..\0002-qwt-no-examples.patch
+    "%PATCH%" -N -i ..\0003-qwt-release.patch
     qmake
     mingw32-make -j4
     mingw32-make install
 popd
+if exist C:\qt goto main_end
 where mugideploy || pip install mugideploy
 qmake
 mingw32-make
 mugideploy collect --bin release\main.exe --plugins sqldrivers --zip
+:main_end

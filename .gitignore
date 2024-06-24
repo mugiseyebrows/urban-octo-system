@@ -4,3 +4,7 @@ build/
 Makefile*
 debug/
 release/
+main-0.0.1-win64/
+*.zip
+qtsvg-everywhere-src-6.7.1/
+*.patch
