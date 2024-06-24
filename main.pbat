@@ -1,7 +1,7 @@
 include(qt671.pbat)
 
-def main depends on qt671 qsqlmysql671 qsqlpsql671 qwt63
-    #if_exist_return(C:\qt)
+def main depends on qt671 qsqlmysql671 qsqlpsql671 qwt630
+    if_exist_return(C:\qt)
     use(conda)
     github_checkout()
     github_rmdir(C:\Strawberry)

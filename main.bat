@@ -94,11 +94,11 @@ pushd qtsvg-everywhere-src-6.7.1
     popd
 popd
 :qtsvg671_end
-if exist C:\qwt\6.3.0\mingw1120_64\lib\qwt.dll goto qwt63_end
+if exist C:\qwt\6.3.0\mingw1120_64\lib\qwt.dll goto qwt630_end
 if not exist qwt (
     git clone https://git.code.sf.net/p/qwt/git qwt
     pushd qwt
-        git checkout qwt-6.3
+        git checkout v6.3.0
     popd
 )
 if not exist 0001-qwt-mingw1120_64.patch "%CURL%" -L -o 0001-qwt-mingw1120_64.patch https://gist.githubusercontent.com/mugiseyebrows/b9521434ce1b8aa798615a7b0541db58/raw/9464118e04a4cb82e522a0575f2581deff8f94c6/0001-qwt-mingw1120_64.patch
@@ -112,8 +112,10 @@ pushd qwt
     mingw32-make -j4
     mingw32-make install
 popd
-:qwt63_end
+:qwt630_end
+if exist C:\qt goto main_end
 where mugideploy || pip install mugideploy
 qmake
 mingw32-make
 mugideploy collect --bin release\main.exe --zip
+:main_end
