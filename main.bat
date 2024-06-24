@@ -111,9 +111,7 @@ pushd qwt
     mingw32-make -j4
     mingw32-make install
 popd
-if exist C:\qt goto main_end
 where mugideploy || pip install mugideploy
 qmake
 mingw32-make
 mugideploy collect --bin release\main.exe --plugins sqldrivers --zip
-:main_end

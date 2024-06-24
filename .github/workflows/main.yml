@@ -198,13 +198,11 @@ jobs:
         echo PATCH not found
         exit /b
         )
-        if exist C:\qt goto main_end
         rmdir /s /q C:\Strawberry || echo 1 > NUL
         where mugideploy || pip install mugideploy
         qmake
         mingw32-make
         mugideploy collect --bin release\main.exe --plugins sqldrivers --zip
-        :main_end
     - name: upload
       uses: actions/upload-artifact@v4
       with:
