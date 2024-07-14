@@ -4,15 +4,17 @@ jobs:
   main:
     runs-on: windows-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v4
     - name: cache time.txt
       uses: actions/cache@v4
       with:
         path: time.txt
         key: time
-    - name: main
+    - name: generate
       shell: cmd
       run: |
-        if not exist time.txt time /t > time.txt
-        type time.txt
+        if exist time.txt goto generate_end
+        time /t > time.txt
+        :generate_end
+    - name: main
+      shell: cmd
+      run: type time.txt

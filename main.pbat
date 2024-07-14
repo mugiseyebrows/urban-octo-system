@@ -1,7 +1,9 @@
-def main
-    github_checkout()
-    if not exist time.txt time /t > time.txt
+def generate
     github_cache(time.txt, :k=time)
+    if_exist_return(time.txt)
+    time /t > time.txt
+
+def main depends on generate
     type time.txt
     
 github-workflow 1
