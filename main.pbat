@@ -1,14 +1,7 @@
-include(qt671.pbat)
-
-def main depends on qt671 qsqlmysql671 qsqlpsql671 qwt630
-    #if_exist_return(C:\qt)
-    use(conda)
+def main
     github_checkout()
-    github_rmdir(C:\Strawberry)
-    where mugideploy || pip install mugideploy
-    qmake
-    mingw32-make
-    mugideploy collect --bin release\main.exe --zip
-    github_upload(main*.zip)
-
+    if not exist date.txt date /t > date.txt
+    github_cache(date.txt, :k=foo)
+    type date.txt
+    
 github-workflow 1
