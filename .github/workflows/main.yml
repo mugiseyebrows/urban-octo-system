@@ -6,13 +6,13 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v4
-    - name: cache date.txt
+    - name: cache time.txt
       uses: actions/cache@v4
       with:
-        path: date.txt
-        key: foo
+        path: time.txt
+        key: time
     - name: main
       shell: cmd
       run: |
-        if not exist date.txt date /t > date.txt
-        type date.txt
+        if not exist time.txt time /t > time.txt
+        type time.txt

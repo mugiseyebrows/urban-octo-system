@@ -1,7 +1,7 @@
 def main
     github_checkout()
-    if not exist date.txt date /t > date.txt
-    github_cache(date.txt, :k=foo)
-    type date.txt
+    if not exist time.txt time /t > time.txt
+    github_cache(time.txt, :k=time)
+    type time.txt
     
 github-workflow 1
