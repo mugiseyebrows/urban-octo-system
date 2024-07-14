@@ -1,0 +1,17 @@
+include(mingw1120.pbat)
+
+def antlr4 depends on mingw1120
+    if_exist_return(C:\antlr4\mingw1120_64\bin\libantlr4-runtime.dll)
+    use(cmake)
+    use(ninja)
+    pushd_cd()
+        git_clone(https://github.com/antlr/antlr4.git)
+        pushd antlr4\runtime\Cpp
+            mkdir(build)
+            pushd build
+                cmake -G Ninja -D CMAKE_C_COMPILER=gcc -D CMAKE_CXX_COMPILER=g++ -D CMAKE_INSTALL_PREFIX=C:/antlr4/mingw1120_64 ..
+                cmake --build . --parallel
+                cmake --install .
+            popd
+        popd
+    popd
