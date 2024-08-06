@@ -47,6 +47,8 @@ def qtbase671 depends on mingw1120
     popd
 
 def qtsvg671
+    use(ninja)
+    use(cmake)
     use(mingw, 11)
     add_path(C:\qt\6.7.1\mingw1120_64\bin)
     if_exist_return(C:\qt\6.7.1\mingw1120_64\bin\Qt6Svg.dll)
@@ -63,6 +65,8 @@ def qtsvg671
     popd
 
 def qtactiveqt671
+    use(ninja)
+    use(cmake)
     use(mingw, 11)
     add_path(C:\qt\6.7.1\mingw1120_64\bin)
     if_exist_return(C:\qt\6.7.1\mingw1120_64\lib\libQt6AxContainer.a)
