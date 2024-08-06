@@ -1,25 +1,26 @@
 def mingw1120
-    github_cache(C:\mingw1120_64, :k=mingw1120_64)
-    add_path(C:\mingw1120_64\bin)
+    #github_cache(C:\mingw1120_64, :k=mingw1120_64)
     if_exist_return(C:\mingw1120_64\bin\gcc.exe)
-    github_rmdir(C:\mingw64)
+    move(C:\mingw64, C:\mingw64_, :github)
     pushd_cd()
         download(https://github.com/cristianadam/mingw-builds/releases/download/v11.2.0-rev3/x86_64-11.2.0-release-posix-seh-rt_v9-rev3.7z, :cache)
         unzip(x86_64-11.2.0-release-posix-seh-rt_v9-rev3.7z, :o=C:\)
-        move C:\mingw64 C:\mingw1120_64
+        move(C:\mingw64, C:\mingw1120_64)
     popd
 
 def qt671 depends on mingw1120
-    github_cache(C:\Qt\6.7.1\mingw1120_64, :k=qt671)
+    #github_cache(C:\Qt\6.7.1\mingw1120_64, :k=qt671)
     use(ninja)
     use(cmake)
+    use(mingw, 11)
     #where(gcc, qmake, cmake, ninja, libpq.dll, libmysql.dll)
     if_exist_return(C:\Qt\6.7.1\mingw1120_64\bin\qmake.exe)
-    github_rmdir(C:\Program Files\PostgreSQL)
-    github_rmdir(C:\Program Files\MySQL)
-    github_rmdir(C:\Program Files\OpenSSL)
-    github_rmdir(C:\Strawberry)
-    github_rmdir(C:\tools\php)
+    # move is faster than rmdir
+    move(C:\Program Files\PostgreSQL, C:\Program Files\PostgreSQL_, :github)
+    move(C:\Program Files\MySQL, C:\Program Files\MySQL_, :github)
+    move(C:\Program Files\OpenSSL, C:\Program Files\OpenSSL_, :github)
+    move(C:\Strawberry, C:\Strawberry_, :github)
+    move(C:\tools\php, C:\tools\php_, :github)
     pushd_cd()
         download(https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtbase-everywhere-src-6.7.1.zip, :cache)
         unzip(qtbase-everywhere-src-6.7.1.zip, :test=qtbase-everywhere-src-6.7.1)
@@ -37,9 +38,9 @@ def qt671 depends on mingw1120
             cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=C:/Qt/6.7.1/mingw1120_64 -DQT_QMAKE_TARGET_MKSPEC=win32-g++ -DQT_BUILD_TESTS=FALSE -DQT_BUILD_EXAMPLES=FALSE -DFEATURE_system_zlib=OFF .
             ninja
             ninja install
-            copy_file(C:\mingw1120_64\bin\libstdc++-6.dll, C:\Qt\6.7.1\mingw1120_64\bin)
-            copy_file(C:\mingw1120_64\bin\libgcc_s_seh-1.dll, C:\Qt\6.7.1\mingw1120_64\bin)
-            copy_file(C:\mingw1120_64\bin\libwinpthread-1.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            #copy(C:\mingw1120_64\bin\libstdc++-6.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            #copy(C:\mingw1120_64\bin\libgcc_s_seh-1.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            #copy(C:\mingw1120_64\bin\libwinpthread-1.dll, C:\Qt\6.7.1\mingw1120_64\bin)
         popd
     popd
 
@@ -49,12 +50,15 @@ def psql1412
     pushd_cd()
         download(https://get.enterprisedb.com/postgresql/postgresql-14.12-2-windows-x64-binaries.zip, :cache)
         unzip(postgresql-14.12-2-windows-x64-binaries.zip, :o=C:\)
-        move C:\pgsql C:\postgresql-14
+        move(C:\pgsql, C:\postgresql-14)
     popd
 
 def qsqlpsql671 depends on psql1412 and mingw1120
-    add_path(C:\postgresql-14\bin)
+    use(ninja)
+    use(cmake)
+    use(mingw, 11)
     add_path(C:\qt\6.7.1\mingw1120_64\bin)
+    add_path(C:\postgresql-14\bin)
     if_exist_return(C:\qt\6.7.1\mingw1120_64\plugins\sqldrivers\qsqlpsql.dll)
     #where(gcc, qmake, cmake, ninja, libpq.dll, libmysql.dll)
     set PostgreSQL_ROOT=C:\postgresql-14
@@ -68,15 +72,15 @@ def qsqlpsql671 depends on psql1412 and mingw1120
             cmake --build .
             cmake --install .
             # mugideploy list --bin plugins\sqldrivers\qsqlpsql.dll
-            # copy_file(C:\mingw1120_64\bin\libstdc++-6.dll, C:\Qt\6.7.1\mingw1120_64\bin)
-            # copy_file(C:\mingw1120_64\bin\libgcc_s_seh-1.dll, C:\Qt\6.7.1\mingw1120_64\bin)
-            # copy_file(C:\mingw1120_64\bin\libwinpthread-1.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            # copy(C:\mingw1120_64\bin\libstdc++-6.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            # copy(C:\mingw1120_64\bin\libgcc_s_seh-1.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            # copy(C:\mingw1120_64\bin\libwinpthread-1.dll, C:\Qt\6.7.1\mingw1120_64\bin)
             #
-            copy_file(C:\postgresql-14\bin\libpq.dll, C:\Qt\6.7.1\mingw1120_64\bin)
-            copy_file(C:\postgresql-14\bin\libssl-1_1-x64.dll, C:\Qt\6.7.1\mingw1120_64\bin)
-            copy_file(C:\postgresql-14\bin\libcrypto-1_1-x64.dll, C:\Qt\6.7.1\mingw1120_64\bin)
-            copy_file(C:\postgresql-14\bin\libintl-9.dll, C:\Qt\6.7.1\mingw1120_64\bin)
-            copy_file(C:\postgresql-14\bin\libiconv-2.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            #copy(C:\postgresql-14\bin\libpq.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            #copy(C:\postgresql-14\bin\libssl-1_1-x64.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            #copy(C:\postgresql-14\bin\libcrypto-1_1-x64.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            #copy(C:\postgresql-14\bin\libintl-9.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            #copy(C:\postgresql-14\bin\libiconv-2.dll, C:\Qt\6.7.1\mingw1120_64\bin)
         popd
     popd
 
@@ -89,6 +93,10 @@ def mysql820
     popd
 
 def qsqlmysql671 depends on mysql820 and mingw1120
+    use(ninja)
+    use(cmake)
+    use(mingw, 11)
+    add_path(C:\qt\6.7.1\mingw1120_64\bin)
     if_exist_return(C:\qt\6.7.1\mingw1120_64\plugins\sqldrivers\qsqlmysql.dll)
     add_path(C:\mysql-8.2.0-winx64\lib, C:\mysql-8.2.0-winx64\bin)
     #where(gcc, qmake, cmake, ninja, libpq.dll, libmysql.dll)
@@ -101,37 +109,10 @@ def qsqlmysql671 depends on mysql820 and mingw1120
             cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake -DMySQL_INCLUDE_DIR="C:\mysql-8.2.0-winx64\include" -DMySQL_LIBRARY="C:\mysql-8.2.0-winx64\lib\libmysql.lib" ..\qtbase-everywhere-src-6.7.1\src\plugins\sqldrivers
             cmake --build .
             cmake --install .
-            copy_file(C:\mysql-8.2.0-winx64\lib\libmysql.dll, C:\Qt\6.7.1\mingw1120_64\bin)
-            copy_file(C:\mysql-8.2.0-winx64\bin\libssl-3-x64.dll, C:\Qt\6.7.1\mingw1120_64\bin)
-            copy_file(C:\mysql-8.2.0-winx64\bin\libcrypto-3-x64.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            #copy(C:\mysql-8.2.0-winx64\lib\libmysql.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            #copy(C:\mysql-8.2.0-winx64\bin\libssl-3-x64.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+            #copy(C:\mysql-8.2.0-winx64\bin\libcrypto-3-x64.dll, C:\Qt\6.7.1\mingw1120_64\bin)
         popd
     popd
 
-def qtsvg671
-    if_exist_return(C:\qt\6.7.1\mingw1120_64\bin\Qt6Svg.dll)
-    download(https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtsvg-everywhere-src-6.7.1.zip, :cache)
-    unzip(qtsvg-everywhere-src-6.7.1.zip, :t=qtsvg-everywhere-src-6.7.1)
-    pushd qtsvg-everywhere-src-6.7.1
-        mkdir build
-        pushd build
-            cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake ..
-            cmake --build .
-            cmake --install .
-        popd
-    popd
 
-def qwt630 depends on qt671 and qtsvg671
-    github_cache(C:\qwt\6.3.0\mingw1120_64, :k=qwt63)
-    if_exist_return(C:\qwt\6.3.0\mingw1120_64\lib\qwt.dll)
-    git_clone(https://git.code.sf.net/p/qwt/git, qwt, :ref=v6.3.0)
-    download(https://gist.githubusercontent.com/mugiseyebrows/b9521434ce1b8aa798615a7b0541db58/raw/9464118e04a4cb82e522a0575f2581deff8f94c6/0001-qwt-mingw1120_64.patch, :cache)
-    download(https://gist.githubusercontent.com/mugiseyebrows/a04100f99b8f1f8c6815c3903aefad96/raw/a3b9e3087d0889a882f6129a3e07d11c06d1101f/0002-qwt-no-examples.patch, :cache)
-    download(https://gist.githubusercontent.com/mugiseyebrows/885a600fd06902254e224ba757446e25/raw/81ea4ae58764a511c60cdaeb81dbc9e9524220d4/0003-qwt-release.patch, :cache)
-    pushd qwt
-        patch(..\0001-qwt-mingw1120_64.patch, :N)
-        patch(..\0002-qwt-no-examples.patch, :N)
-        patch(..\0003-qwt-release.patch, :N)
-        qmake
-        mingw32-make -j4
-        mingw32-make install
-    popd

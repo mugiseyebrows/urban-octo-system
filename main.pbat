@@ -1,9 +1,6 @@
-def generate
-    github_cache(time.txt, :k=time)
-    if_exist_return(time.txt)
-    time /t > time.txt
+include(qt671.pbat)
 
-def main depends on generate
-    type time.txt
-    
+def main depends on qt671 qsqlpsql671 qsqlmysql671
+    github_upload(C:\qt\6.7.1\mingw1120_64)
+
 github-workflow 1
