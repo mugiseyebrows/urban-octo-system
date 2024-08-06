@@ -8,7 +8,7 @@ def mingw1120
         move(C:\mingw64, C:\mingw1120_64)
     popd
 
-def qt671 depends on mingw1120
+def qtbase671 depends on mingw1120
     #github_cache(C:\Qt\6.7.1\mingw1120_64, :k=qt671)
     use(ninja)
     use(cmake)
@@ -36,11 +36,44 @@ def qt671 depends on mingw1120
             # -DINPUT_opengl=desktop
             # -G "Ninja Multi-Config"
             cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=C:/Qt/6.7.1/mingw1120_64 -DQT_QMAKE_TARGET_MKSPEC=win32-g++ -DQT_BUILD_TESTS=FALSE -DQT_BUILD_EXAMPLES=FALSE -DFEATURE_system_zlib=OFF .
-            ninja
-            ninja install
+            #ninja
+            #ninja install
+            cmake --build . --parallel
+            cmake --install .
             #copy(C:\mingw1120_64\bin\libstdc++-6.dll, C:\Qt\6.7.1\mingw1120_64\bin)
             #copy(C:\mingw1120_64\bin\libgcc_s_seh-1.dll, C:\Qt\6.7.1\mingw1120_64\bin)
             #copy(C:\mingw1120_64\bin\libwinpthread-1.dll, C:\Qt\6.7.1\mingw1120_64\bin)
+        popd
+    popd
+
+def qtsvg671
+    use(mingw, 11)
+    add_path(C:\qt\6.7.1\mingw1120_64\bin)
+    if_exist_return(C:\qt\6.7.1\mingw1120_64\bin\Qt6Svg.dll)
+    download(https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtsvg-everywhere-src-6.7.1.zip, :cache)
+    unzip(qtsvg-everywhere-src-6.7.1.zip, :t=qtsvg-everywhere-src-6.7.1)
+    pushd qtsvg-everywhere-src-6.7.1
+        mkdir(build)
+        pushd build
+            cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake ..
+            #cmake -G "Ninja Multi-Config" -DCMAKE_CONFIGURATION_TYPES="Release;Debug" -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake ..
+            cmake --build .
+            cmake --install .
+        popd
+    popd
+
+def qtactiveqt671
+    use(mingw, 11)
+    add_path(C:\qt\6.7.1\mingw1120_64\bin)
+    if_exist_return(C:\qt\6.7.1\mingw1120_64\lib\libQt6AxContainer.a)
+    download(https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtactiveqt-everywhere-src-6.7.1.zip, :cache)
+    unzip(qtactiveqt-everywhere-src-6.7.1.zip, :t=qtactiveqt-everywhere-src-6.7.1)
+    pushd qtactiveqt-everywhere-src-6.7.1
+        mkdir(build)
+        pushd build
+            cmake -G Ninja -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake ..
+            cmake --build .
+            cmake --install .
         popd
     popd
 
@@ -56,6 +89,8 @@ def psql1412
 def qsqlpsql671 depends on psql1412 and mingw1120
     use(ninja)
     use(cmake)
+    use(conda)
+    install(mugideploy)
     use(mingw, 11)
     add_path(C:\qt\6.7.1\mingw1120_64\bin)
     add_path(C:\postgresql-14\bin)
@@ -71,6 +106,7 @@ def qsqlpsql671 depends on psql1412 and mingw1120
             cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake ..\qtbase-everywhere-src-6.7.1\src\plugins\sqldrivers
             cmake --build .
             cmake --install .
+            mugideploy copy-dep --bin C:\qt\6.7.1\mingw1120_64\plugins\sqldrivers\qsqlpsql.dll --dst C:\Qt\6.7.1\mingw1120_64\bin
             # mugideploy list --bin plugins\sqldrivers\qsqlpsql.dll
             # copy(C:\mingw1120_64\bin\libstdc++-6.dll, C:\Qt\6.7.1\mingw1120_64\bin)
             # copy(C:\mingw1120_64\bin\libgcc_s_seh-1.dll, C:\Qt\6.7.1\mingw1120_64\bin)
@@ -96,6 +132,8 @@ def qsqlmysql671 depends on mysql820 and mingw1120
     use(ninja)
     use(cmake)
     use(mingw, 11)
+    use(conda)
+    install(mugideploy)
     add_path(C:\qt\6.7.1\mingw1120_64\bin)
     if_exist_return(C:\qt\6.7.1\mingw1120_64\plugins\sqldrivers\qsqlmysql.dll)
     add_path(C:\mysql-8.2.0-winx64\lib, C:\mysql-8.2.0-winx64\bin)
@@ -109,6 +147,7 @@ def qsqlmysql671 depends on mysql820 and mingw1120
             cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake -DMySQL_INCLUDE_DIR="C:\mysql-8.2.0-winx64\include" -DMySQL_LIBRARY="C:\mysql-8.2.0-winx64\lib\libmysql.lib" ..\qtbase-everywhere-src-6.7.1\src\plugins\sqldrivers
             cmake --build .
             cmake --install .
+            mugideploy copy-dep --bin C:\qt\6.7.1\mingw1120_64\plugins\sqldrivers\qsqlmysql.dll --dst C:\Qt\6.7.1\mingw1120_64\bin
             #copy(C:\mysql-8.2.0-winx64\lib\libmysql.dll, C:\Qt\6.7.1\mingw1120_64\bin)
             #copy(C:\mysql-8.2.0-winx64\bin\libssl-3-x64.dll, C:\Qt\6.7.1\mingw1120_64\bin)
             #copy(C:\mysql-8.2.0-winx64\bin\libcrypto-3-x64.dll, C:\Qt\6.7.1\mingw1120_64\bin)

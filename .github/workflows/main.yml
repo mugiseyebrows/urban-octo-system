@@ -15,11 +15,11 @@ jobs:
             move /y C:\mingw64 C:\mingw1120_64
         popd
         :mingw1120_end
-    - name: qt671
+    - name: qtbase671
       shell: cmd
       run: |
         set PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files (x86)\Android\android-sdk\cmake\3.22.1\bin;C:\mingw1120_64\bin;%PATH%
-        if exist C:\Qt\6.7.1\mingw1120_64\bin\qmake.exe goto qt671_end
+        if exist C:\Qt\6.7.1\mingw1120_64\bin\qmake.exe goto qtbase671_end
         move /y "C:\Program Files\PostgreSQL" "C:\Program Files\PostgreSQL_"
         move /y "C:\Program Files\MySQL" "C:\Program Files\MySQL_"
         move /y "C:\Program Files\OpenSSL" "C:\Program Files\OpenSSL_"
@@ -30,11 +30,11 @@ jobs:
             if not exist qtbase-everywhere-src-6.7.1 7z x -y qtbase-everywhere-src-6.7.1.zip
             pushd qtbase-everywhere-src-6.7.1
                 cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=C:/Qt/6.7.1/mingw1120_64 -DQT_QMAKE_TARGET_MKSPEC=win32-g++ -DQT_BUILD_TESTS=FALSE -DQT_BUILD_EXAMPLES=FALSE -DFEATURE_system_zlib=OFF .
-                ninja
-                ninja install
+                cmake --build . --parallel
+                cmake --install .
             popd
         popd
-        :qt671_end
+        :qtbase671_end
     - name: psql1412
       shell: cmd
       run: |
@@ -49,7 +49,8 @@ jobs:
     - name: qsqlpsql671
       shell: cmd
       run: |
-        set PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files (x86)\Android\android-sdk\cmake\3.22.1\bin;C:\mingw1120_64\bin;C:\qt\6.7.1\mingw1120_64\bin;C:\postgresql-14\bin;%PATH%
+        set PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files (x86)\Android\android-sdk\cmake\3.22.1\bin;C:\Miniconda;C:\Miniconda\Scripts;C:\mingw1120_64\bin;C:\qt\6.7.1\mingw1120_64\bin;C:\postgresql-14\bin;%PATH%
+        where mugideploy > NUL 2>&1 || pip install mugideploy
         if exist C:\qt\6.7.1\mingw1120_64\plugins\sqldrivers\qsqlpsql.dll goto qsqlpsql671_end
         set PostgreSQL_ROOT=C:\postgresql-14
         pushd %GITHUB_WORKSPACE%
@@ -60,6 +61,7 @@ jobs:
                 cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake ..\qtbase-everywhere-src-6.7.1\src\plugins\sqldrivers
                 cmake --build .
                 cmake --install .
+                mugideploy copy-dep --bin C:\qt\6.7.1\mingw1120_64\plugins\sqldrivers\qsqlpsql.dll --dst C:\Qt\6.7.1\mingw1120_64\bin
             popd
         popd
         :qsqlpsql671_end
@@ -76,7 +78,8 @@ jobs:
     - name: qsqlmysql671
       shell: cmd
       run: |
-        set PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files (x86)\Android\android-sdk\cmake\3.22.1\bin;C:\mingw1120_64\bin;C:\qt\6.7.1\mingw1120_64\bin;C:\mysql-8.2.0-winx64\lib;C:\mysql-8.2.0-winx64\bin;%PATH%
+        set PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;C:\Program Files (x86)\Android\android-sdk\cmake\3.22.1\bin;C:\mingw1120_64\bin;C:\Miniconda;C:\Miniconda\Scripts;C:\qt\6.7.1\mingw1120_64\bin;C:\mysql-8.2.0-winx64\lib;C:\mysql-8.2.0-winx64\bin;%PATH%
+        where mugideploy > NUL 2>&1 || pip install mugideploy
         if exist C:\qt\6.7.1\mingw1120_64\plugins\sqldrivers\qsqlmysql.dll goto qsqlmysql671_end
         pushd %GITHUB_WORKSPACE%
             if not exist build-qsqlmysql mkdir build-qsqlmysql
@@ -86,9 +89,42 @@ jobs:
                 cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake -DMySQL_INCLUDE_DIR="C:\mysql-8.2.0-winx64\include" -DMySQL_LIBRARY="C:\mysql-8.2.0-winx64\lib\libmysql.lib" ..\qtbase-everywhere-src-6.7.1\src\plugins\sqldrivers
                 cmake --build .
                 cmake --install .
+                mugideploy copy-dep --bin C:\qt\6.7.1\mingw1120_64\plugins\sqldrivers\qsqlmysql.dll --dst C:\Qt\6.7.1\mingw1120_64\bin
             popd
         popd
         :qsqlmysql671_end
+    - name: qtsvg671
+      shell: cmd
+      run: |
+        set PATH=C:\mingw1120_64\bin;C:\qt\6.7.1\mingw1120_64\bin;%PATH%
+        if exist C:\qt\6.7.1\mingw1120_64\bin\Qt6Svg.dll goto qtsvg671_end
+        if not exist qtsvg-everywhere-src-6.7.1.zip curl -L -o qtsvg-everywhere-src-6.7.1.zip https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtsvg-everywhere-src-6.7.1.zip
+        if not exist qtsvg-everywhere-src-6.7.1 7z x -y qtsvg-everywhere-src-6.7.1.zip
+        pushd qtsvg-everywhere-src-6.7.1
+            if not exist build mkdir build
+            pushd build
+                cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake ..
+                cmake --build .
+                cmake --install .
+            popd
+        popd
+        :qtsvg671_end
+    - name: qtactiveqt671
+      shell: cmd
+      run: |
+        set PATH=C:\mingw1120_64\bin;C:\qt\6.7.1\mingw1120_64\bin;%PATH%
+        if exist C:\qt\6.7.1\mingw1120_64\lib\libQt6AxContainer.a goto qtactiveqt671_end
+        if not exist qtactiveqt-everywhere-src-6.7.1.zip curl -L -o qtactiveqt-everywhere-src-6.7.1.zip https://download.qt.io/official_releases/qt/6.7/6.7.1/submodules/qtactiveqt-everywhere-src-6.7.1.zip
+        if not exist qtactiveqt-everywhere-src-6.7.1 7z x -y qtactiveqt-everywhere-src-6.7.1.zip
+        pushd qtactiveqt-everywhere-src-6.7.1
+            if not exist build mkdir build
+            pushd build
+                cmake -G Ninja -DCMAKE_INSTALL_PREFIX="C:\Qt\6.7.1\mingw1120_64" -DCMAKE_TOOLCHAIN_FILE=C:\qt\6.7.1\mingw1120_64\lib\cmake\Qt6\qt.toolchain.cmake ..
+                cmake --build .
+                cmake --install .
+            popd
+        popd
+        :qtactiveqt671_end
     - name: upload
       uses: actions/upload-artifact@v4
       with:

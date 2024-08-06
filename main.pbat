@@ -1,6 +1,6 @@
 include(qt671.pbat)
 
-def main depends on qt671 qsqlpsql671 qsqlmysql671
+def main depends on qtbase671 qsqlpsql671 qsqlmysql671 qtsvg671 qtactiveqt671
     github_upload(C:\qt\6.7.1\mingw1120_64)
 
 github-workflow 1
