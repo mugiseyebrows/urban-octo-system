@@ -1,6 +1,8 @@
 where cmake
 call_vcvars()
 where cmake
+use(conda)
+pip install pyfindlib
 pyfind C:\Miniconda > conda.txt
 github_upload(conda.txt)
 github-workflow 1
