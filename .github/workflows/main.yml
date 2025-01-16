@@ -19,3 +19,14 @@ jobs:
         where gcc || echo no gcc
         where python || echo no python
         where 7z || echo no 7z
+        pyfind C:\hostedtoolcache\windows > hostedtoolcache.txt
+        pyfind C:\ProgramData\Chocolatey > chocolatey.txt
+        pyfind C:\Program Files\Microsoft Visual Studio > visual_studio.txt
+    - name: upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: hostedtoolcache
+        path: |
+          hostedtoolcache.txt
+          chocolatey.txt
+          visual_studio.txt
