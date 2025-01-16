@@ -15,4 +15,5 @@ where 7z || echo no 7z
 pip install pyfindlib
 pyfind C:\hostedtoolcache\windows > hostedtoolcache.txt
 pyfind C:\ProgramData\Chocolatey > chocolatey.txt
-pyfind C:\Program Files\Microsoft Visual Studio > visual_studio.txt
+pyfind "C:\Program Files\Microsoft Visual Studio" > visual_studio.txt
+pyfind "C:\Program Files" > program_files.txt
