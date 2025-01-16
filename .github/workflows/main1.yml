@@ -8,4 +8,4 @@ jobs:
       shell: cmd
       run: |
         pip install mugicli
-        pyfor -n 10 --blank-line -- cmd /c "pyecho -n 1 > :iter:.txt && pysleep 10 && pycat *.txt"
+        pyfor -n 10 --blank-line -- cmd /c "pyecho -n 1 > C:\mingw\:iter:.txt && pysleep 10 && pycat C:\mingw\*.txt"
