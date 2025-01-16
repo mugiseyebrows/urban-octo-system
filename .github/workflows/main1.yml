@@ -1,4 +1,4 @@
-name: main1
+name: main
 on: push
 jobs:
   main:
@@ -8,13 +8,4 @@ jobs:
       shell: cmd
       run: |
         pip install mugicli
-        pysleep 1
-        echo 1 > 1.txt
-        pysleep 1
-        type *.txt
-        echo 1 > 2.txt
-        pysleep 1
-        type *.txt
-        echo 1 > 3.txt
-        pysleep 1
-        type *.txt
+        pyfor -n 10 --blank-line -- cmd /c "pyecho -n 1 > :iter:.txt && pysleep 10 && pycat *.txt"
