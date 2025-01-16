@@ -13,7 +13,11 @@ where gcc || echo no gcc
 where python || echo no python
 where 7z || echo no 7z
 pip install pyfindlib
+echo C:\hostedtoolcache\windows
 pyfind C:\hostedtoolcache\windows > hostedtoolcache.txt
+echo C:\ProgramData\Chocolatey
 pyfind C:\ProgramData\Chocolatey > chocolatey.txt
+echo C:\Program Files\Microsoft Visual Studio
 pyfind "C:\Program Files\Microsoft Visual Studio" > visual_studio.txt
+echo C:\Program Files
 pyfind "C:\Program Files" > program_files.txt
