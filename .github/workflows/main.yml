@@ -7,14 +7,13 @@ jobs:
     - name: main
       shell: cmd
       run: |
-        set PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build;C:\Miniconda;C:\Miniconda\Scripts;%PATH%
-        where cmake
+        set PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build;%PATH%
+        where cmake || echo no cmake
+        where ninja || echo no ninja
+        where gcc || echo no gcc
+        where python || echo no python
         call vcvars64.bat
-        where cmake
-        pip install pyfindlib
-        pyfind C:\Miniconda > conda.txt
-    - name: upload
-      uses: actions/upload-artifact@v4
-      with:
-        name: conda
-        path: conda.txt
+        where cmake || echo no cmake
+        where ninja || echo no ninja
+        where gcc || echo no gcc
+        where python || echo no python

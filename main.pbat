@@ -1,8 +1,11 @@
-where cmake
+where cmake || echo no cmake
+where ninja || echo no ninja
+where gcc || echo no gcc
+where python || echo no python
 call_vcvars()
-where cmake
-use(conda)
-pip install pyfindlib
-pyfind C:\Miniconda > conda.txt
-github_upload(conda.txt)
+where cmake || echo no cmake
+where ninja || echo no ninja
+where gcc || echo no gcc
+where python || echo no python
+
 github-workflow 1
