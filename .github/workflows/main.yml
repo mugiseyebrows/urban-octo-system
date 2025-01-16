@@ -11,9 +11,11 @@ jobs:
         where ninja || echo no ninja
         where gcc || echo no gcc
         where python || echo no python
+        where 7z || echo no 7z
         set PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build;%PATH%
         call vcvars64.bat
         where cmake || echo no cmake
         where ninja || echo no ninja
         where gcc || echo no gcc
         where python || echo no python
+        where 7z || echo no 7z
