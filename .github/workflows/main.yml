@@ -7,11 +7,11 @@ jobs:
     - name: main
       shell: cmd
       run: |
-        set PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build;%PATH%
         where cmake || echo no cmake
         where ninja || echo no ninja
         where gcc || echo no gcc
         where python || echo no python
+        set PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build;%PATH%
         call vcvars64.bat
         where cmake || echo no cmake
         where ninja || echo no ninja
