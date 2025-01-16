@@ -1,4 +1,4 @@
-name: main
+name: main-2
 on: push
 jobs:
   main:
